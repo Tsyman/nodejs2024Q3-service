@@ -9,9 +9,8 @@ import {
   HttpCode,
   NotFoundException,
 } from '@nestjs/common';
-import { UUIDv4 } from '../artists/artists.payload';
-import { ArtistsService } from '../artists/artists.service';
-import { CreateArtistDto, UpdateArtistDto } from '../artists/artists.payload';
+import { UUIDv4, CreateArtistDto, UpdateArtistDto } from './artists.payload';
+import { ArtistsService } from './artists.service';
 
 @Controller('artist')
 export class ArtistsController {
