@@ -37,6 +37,10 @@ For more information about OpenAPI/Swagger please visit https://swagger.io/.
 
 ## Testing
 
+### Run tests only after start app (npm run start)
+To run tests for part 1 task you can run the next command:
+- npm run test ./test/favorites.e2e.spec.ts ./test/albums.e2e.spec.ts ./test/artists.e2e.spec.ts  ./test/tracks.e2e.spec.ts  ./test/users.e2e.spec.ts
+
 After application running open new terminal and enter:
 
 To run all tests without authorization
