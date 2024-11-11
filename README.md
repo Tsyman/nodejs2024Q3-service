@@ -15,6 +15,14 @@ git clone {repository URL}
 
 ```
 npm install
+
+```
+
+## Setting environment
+
+```
+Create .env file (based on .env.example)
+
 ```
 
 ## Running application
@@ -28,6 +36,10 @@ in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 For more information about OpenAPI/Swagger please visit https://swagger.io/.
 
 ## Testing
+
+### Run tests only after start app (npm run start)
+To run tests for part 1 task you can run the next command:
+- npm run test ./test/favorites.e2e.spec.ts ./test/albums.e2e.spec.ts ./test/artists.e2e.spec.ts  ./test/tracks.e2e.spec.ts  ./test/users.e2e.spec.ts
 
 After application running open new terminal and enter:
 
