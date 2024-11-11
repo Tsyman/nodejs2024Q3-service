@@ -6,10 +6,18 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { CreateUserDto, UpdatePasswordDto } from '../users/users.payload';
 import { User } from '../users/users.entity';
+import { Artist } from '../artists/artists.entity';
+import { CreateArtistDto, UpdateArtistDto } from '../artists/artists.payload';
 
 @Injectable()
 export class DbService {
   private users: User[] = [];
+  private artists: Artist[] = [];
+
+  // User
+  findAllUsers(): User[] {
+    return this.users;
+  }
 
   createUser(createUserDto: CreateUserDto) {
     const newUser = new User();
@@ -29,10 +37,6 @@ export class DbService {
       createdAt: newUser.createdAt,
       updatedAt: newUser.updatedAt,
     };
-  }
-
-  findAllUsers(): User[] {
-    return this.users;
   }
 
   findUserById(id: string): User | undefined {
@@ -74,5 +78,49 @@ export class DbService {
       updatedUser: undefined,
       error: new NotFoundException('User not found'),
     };
+  }
+
+  // Artist
+  findAllArtists(): Artist[] {
+    return this.artists;
+  }
+
+  findArtistById(id: string): Artist | undefined {
+    return this.artists.find((artist) => artist.id === id);
+  }
+
+  createArtist(createArtistDto: CreateArtistDto) {
+    const newArtist = new Artist();
+
+    newArtist.id = uuidv4();
+    newArtist.name = createArtistDto.name;
+    newArtist.grammy = createArtistDto.grammy;
+
+    this.artists.push(newArtist);
+    return newArtist;
+  }
+
+  updateArtist(id: string, updateArtistDto: UpdateArtistDto) {
+    const artist = this.artists.find((artist) => artist.id === id);
+    if (artist) {
+      artist.name = updateArtistDto.name;
+      artist.grammy = updateArtistDto.grammy;
+      return {
+        updatedArtist: artist,
+      };
+    }
+    return {
+      updatedArtist: undefined,
+      error: new NotFoundException('Artist not found'),
+    };
+  }
+
+  removeArtistById(id: string): boolean {
+    const artist = this.artists.find((artist) => artist.id === id);
+    if (artist) {
+      this.artists = this.artists.filter((value) => value !== artist);
+      return true;
+    }
+    return false;
   }
 }
