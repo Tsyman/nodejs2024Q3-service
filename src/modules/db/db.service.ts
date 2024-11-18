@@ -34,8 +34,8 @@ export class DbService {
       login: createUserDto.login,
       password: createUserDto.password,
       version: 1,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
+      createdAt: new Date(Date.now()),
+      updatedAt: new Date(Date.now()),
     });
 
     this.users.push(newUser);
@@ -66,7 +66,7 @@ export class DbService {
       }
       user.version += 1;
       user.password = updatePasswordDto.newPassword;
-      user.updatedAt = Date.now();
+      user.updatedAt = new Date(Date.now());
       return {
         updatedUser: user,
       };

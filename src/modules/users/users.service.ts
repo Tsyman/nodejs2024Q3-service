@@ -1,28 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { DbService } from '../db/db.service';
 import { CreateUserDto, UpdatePasswordDto } from '../users/users.payload';
+import { PrismaService } from 'prisma/migrations/prisma.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private db: DbService) {}
+  constructor(private db: PrismaService) {}
 
-  create(createUserDto: CreateUserDto) {
-    return this.db.createUser(createUserDto);
+  async create(createUserDto: CreateUserDto) {
+    return await this.db.createUser(createUserDto);
   }
 
-  findAll() {
-    return this.db.findAllUsers();
+  async findAll() {
+    return await this.db.findAllUsers();
   }
 
-  findOne(id: string) {
-    return this.db.findUserById(id);
+  async findOne(id: string) {
+    return await this.db.findUserById(id);
   }
 
-  update(id: string, updatePasswordDto: UpdatePasswordDto) {
-    return this.db.updatePassword(id, updatePasswordDto);
+  async update(id: string, updatePasswordDto: UpdatePasswordDto) {
+    return await this.db.updatePassword(id, updatePasswordDto);
   }
 
-  remove(id: string) {
-    return this.db.removeUserById(id);
+  async remove(id: string) {
+    return await this.db.removeUserById(id);
   }
 }
