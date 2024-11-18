@@ -1,7 +1,7 @@
 import { Exclude, Transform } from 'class-transformer';
-import { User as PrismaUser } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
-export class User implements PrismaUser {
+export class User implements PrismaClient {
   id: string; // uuid v4
   login: string;
 

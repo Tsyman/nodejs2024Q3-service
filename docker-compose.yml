@@ -12,25 +12,40 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       PGDATA: ${PGDATA}
+      PGLOGS: ${PGLOGS}
     volumes:
-        - postgres:${PGDATA}
+      - postgres_data:${PGDATA}
+      - postgres_logs:${PGLOGS}
+    command: postgres -c logging_collector=on -c log_destination=stderr -c log_directory=${PGLOGS}
     networks:
-      - back-tier
+      back-tier:
+        ipv4_address: ${POSTGRES_IPv4}
+        ipv6_address: ${POSTGRES_IPv6}
     ports:
-      - '5432:5432'
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     restart: unless-stopped
   app:
     build:
       context: .
       dockerfile: app-image.Dockerfile
+    depends_on:
+      - postgres
     image: 'nodejs2024q1-service-app'
     container_name: app
     ports:
-      - '4000:4000'
+      - ${PORT}:${PORT}
     networks:
-      - back-tier
-    restart: unless-stopped  
+      back-tier:
+        ipv4_address: ${APP_IPv4}
+        ipv6_address: ${APP_IPv6}
+    restart: unless-stopped
 networks:
   back-tier:
+    ipam:
+      driver: default
+      config:
+        - subnet: ${SUBNET_IPv4}
+        - subnet: ${SUBNET_IPv6}
 volumes:
-  postgres:
+  postgres_data:
+  postgres_logs:
