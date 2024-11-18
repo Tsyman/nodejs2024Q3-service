@@ -7,6 +7,10 @@ import {
 } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import {
+  CreateArtistDto,
+  UpdateArtistDto,
+} from 'src/modules/artists/artists.payload';
+import {
   CreateUserDto,
   UpdatePasswordDto,
 } from 'src/modules/users/users.payload';
@@ -81,6 +85,55 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     });
     if (user) {
       await this.user.delete({ where: { id } });
+      return true;
+    }
+    return false;
+  }
+
+  // Artist
+  async findAllArtists() {
+    return await this.artist.findMany();
+  }
+
+  async findArtistById(id: string) {
+    return await this.artist.findUnique({
+      where: { id: id },
+    });
+  }
+
+  async createArtist(createArtistDto: CreateArtistDto) {
+    return await this.artist.create({
+      data: createArtistDto,
+    });
+  }
+
+  async updateArtist(id: string, updateArtistDto: UpdateArtistDto) {
+    const artist = await this.artist.findUnique({
+      where: { id: id },
+    });
+
+    if (artist) {
+      const updatedArtist = await this.artist.update({
+        where: { id },
+        data: updateArtistDto,
+      });
+
+      return {
+        updatedArtist: updatedArtist,
+      };
+    }
+    return {
+      updatedArtist: undefined,
+      error: new NotFoundException('Artist not found'),
+    };
+  }
+
+  async removeArtistById(id: string): Promise<boolean> {
+    const artist = await this.artist.findUnique({
+      where: { id },
+    });
+    if (artist) {
+      await this.artist.delete({ where: { id } });
       return true;
     }
     return false;
