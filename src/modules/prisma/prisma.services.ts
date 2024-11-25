@@ -24,6 +24,7 @@ import {
   CreateUserDto,
   UpdatePasswordDto,
 } from 'src/modules/users/users.payload';
+import * as bcrypt from 'bcrypt';
 
 @Global()
 @Injectable()
@@ -47,7 +48,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     return await this.user.create({
       data: {
         login: createUserDto.login,
-        password: createUserDto.password,
+        password: await bcrypt.hash(createUserDto.password, 8),
         version: 1,
         createdAt: new Date(Date.now()),
         updatedAt: new Date(Date.now()),
@@ -61,7 +62,9 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     });
 
     if (user) {
-      if (user.password !== updatePasswordDto.oldPassword) {
+      if (
+        !(await bcrypt.compare(updatePasswordDto.oldPassword, user.password))
+      ) {
         return {
           updatedUser: undefined,
           error: new ForbiddenException('Old password is wrong'),

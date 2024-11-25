@@ -2,6 +2,8 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { AuthDto } from './auth.payload';
+import * as bcrypt from 'bcrypt';
+import { CreateUserDto } from '../users/users.payload';
 
 @Injectable()
 export class AuthService {
@@ -12,12 +14,16 @@ export class AuthService {
 
   async login(authDto: AuthDto): Promise<{ accessToken: string }> {
     const user = await this.usersService.findOneByLogin(authDto.login);
-    if (user?.password !== authDto.password) {
+    if (!(await bcrypt.compare(authDto.password, user?.password))) {
       throw new ForbiddenException('Unauthorized');
     }
     const payload = { sub: user.id, login: user.login };
     return {
       accessToken: await this.jwtService.signAsync(payload),
     };
+  }
+
+  async signup(createUserDto: CreateUserDto) {
+    return await this.usersService.create(createUserDto);
   }
 }
