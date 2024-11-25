@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: db-image.Dockerfile
-    image: 'nodejs2024q1-service-postgres'
+    image: 'nodejs2024q3-service-postgres'
     container_name: 'postgres'
     environment:
       POSTGRES_HOST: ${POSTGRES_HOST}
@@ -30,7 +30,7 @@ services:
       dockerfile: app-image.Dockerfile
     depends_on:
       - postgres
-    image: 'nodejs2024q1-service-app'
+    image: 'nodejs2024q3-service-app'
     container_name: app
     ports:
       - ${PORT}:${PORT}

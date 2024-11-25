@@ -9,7 +9,7 @@
 ## Downloading
 
 ```
-git clone -b part-2 https://github.com/Tsyman/nodejs2024Q1-service.git
+git clone -b part-3 https://github.com/Tsyman/nodejs2024Q3-service.git
 ```
 
 ## Create and start containers
@@ -40,13 +40,13 @@ docker compose down
 2. Remove images:
 
 ```
-docker rmi nodejs2024q1-service-app
-docker rmi nodejs2024q1-service-postgres
+docker rmi nodejs2024q3-service-app
+docker rmi nodejs2024q3-service-postgres
 ```
 
 3. Remove volumes:
 
 ```
-docker volume rm nodejs2024q1-service_postgres_data
-docker volume rm nodejs2024q1-service_postgres_logs
+docker volume rm nodejs2024q3-service_postgres_data
+docker volume rm nodejs2024q3-service_postgres_logs
 ```
