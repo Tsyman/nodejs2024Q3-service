@@ -1,4 +1,4 @@
-# Home Library Service: Containerization and Database (PostgreSQL) & ORM
+# Home Library Service: Logging & Error Handling and Authentication and Authorization
 
 ## Prerequisites
 
@@ -26,7 +26,7 @@ in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 After application running open new terminal and enter:
 
 ```
-docker exec -it app npm run test
+npm run test:auth
 ```
 
 ## Remove project
