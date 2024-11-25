@@ -8,7 +8,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthDto } from './auth.payload';
+import { AuthDto, RefreshDto } from './auth.payload';
 import { Public } from './auth.decorator';
 import { CreateUserDto } from '../users/users.payload';
 import { User } from '../users/users.entity';
@@ -31,5 +31,13 @@ export class AuthController {
   @Post('signup')
   async signup(@Body() createUserDto: CreateUserDto) {
     return new User(await this.authService.signup(createUserDto));
+  }
+
+  @Public()
+  @UseInterceptors(ClassSerializerInterceptor)
+  @HttpCode(HttpStatus.OK)
+  @Post('refresh')
+  async refresh(@Body() refreshDto: RefreshDto) {
+    return await this.authService.refresh(refreshDto);
   }
 }
